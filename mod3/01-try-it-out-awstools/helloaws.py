@@ -10,3 +10,5 @@ response = s3_client.list_buckets()
 # バケット名を1行ずつ出力
 for bucket in response['Buckets']:
     print(bucket['Name'])
+
+print('### Completed! ###')
