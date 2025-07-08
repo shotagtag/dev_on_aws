@@ -19,10 +19,15 @@ aws s3 ls
 
 ## AWSSDKでAWSサービスを操作してみましょう。
 
-1. サンプルコードを取得します。
+1. サンプルコードを取得し、ディレクトリに移動します。
 ```
 git clone https://github.com/shotagtag/dev_on_aws
 cd dev_on_aws/mod3/01-try-it-out-awstools/
+```
+
+2. boto3(pythonのAWSSDK)をインストールします。
+```
+pip3 install boto3
 ```
 
 2. サンプルコードを確認します。
