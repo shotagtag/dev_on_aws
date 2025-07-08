@@ -29,12 +29,12 @@ cd dev_on_aws/mod3/01-try-it-out-awstools/
 pip3 install boto3
 ```
 
-2. サンプルコードを確認します。
+3. サンプルコードを確認します。
 ```
 cat helloaws.py
 ```
 
-3. サンプルコードを実行します。
+4. サンプルコードを実行します。
 ```
 python3 helloaws.py
 ```
