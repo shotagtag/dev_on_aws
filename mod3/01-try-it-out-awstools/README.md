@@ -24,11 +24,14 @@ aws s3 ls
 git clone https://github.com/shotagtag/dev_on_aws
 cd dev_on_aws/mod3/01-try-it-out-awstools/
 ```
-1. サンプルコードを確認します。
+
+2. サンプルコードを確認します。
 ```
 cat helloaws.py
 ```
-1. サンプルコードを実行します。
+
+3. サンプルコードを実行します。
 ```
 python3 helloaws.py
 ```
+
