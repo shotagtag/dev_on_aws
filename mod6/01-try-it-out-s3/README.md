@@ -74,7 +74,7 @@ aws s3 cp s3://$BUCKET_NAME/AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-
 
 ### S3へアップロード(マルチパートアップロード)
 
-高レベルAPIのためcpコマンドでもよしなにマルチアップロードしてくれます
+高レベルコマンドのためcpコマンドでもよしなにマルチアップロードしてくれます
 
 ```shell
 dd if=/dev/zero of=50MB.dummy bs=1M count=50 # 50MBのダミーファイル作成
@@ -97,6 +97,12 @@ aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data/ s3://$BUCKET_NA
 aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document error.html
 ```
 
+静的Webサイトの資材が入ったフォルダをアップロードします
+
+```shell
+aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/sample-site/ s3://$BUCKET_NAME
+```
+
 公開ウェブサイトに必要なバケットポリシーを設定します。しかし、ブロックパブリックアクセスが有効化されているため、このままではバケットを公開するためのバケットポリシーを設定しようとしても拒否されてしまいます。そこでブロックパブリックアクセスを無効化します。
 
 ```
@@ -117,9 +123,9 @@ aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy file://~/environment/
 echo http://$BUCKET_NAME.s3-website.$REGION.amazonaws.com/
 ```
 
-## s3apiコマンド(低レベルAPI)
+## s3apiコマンド(低レベルコマンド)
 
-低レベルAPIなのでレスポンスがそのまま返却されます
+低レベルコマンドなのでレスポンスがそのまま返却されます
 
 どんなコマンドがあるかはhelpコマンドを実行してみましょう
 
@@ -129,7 +135,7 @@ aws s3api help
 
 ### S3バケット一覧を取得
 
-低レベルAPIのレスポンスがどのような内容か確認します
+低レベルコマンドのレスポンスがどのような内容か確認します
 
 ```shell
 aws s3api list-buckets
@@ -163,7 +169,7 @@ aws s3api get-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg ~/environment/d
 
 ### S3へアップロード(マルチパートアップロード)
 
-低レベルAPIのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
+低コマンドAPIのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
 
 ```shell
 # 50MBのダミーファイル作成
