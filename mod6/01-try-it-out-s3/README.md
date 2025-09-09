@@ -77,15 +77,6 @@ aws s3 cp ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS.jpg s3://$BUCKET_NA
 aws s3 cp s3://$BUCKET_NAME/AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS-2.jpg
 ```
 
-### S3へアップロード(マルチパートアップロード)
-
-高レベルコマンドのためcpコマンドでもよしなにマルチアップロードしてくれます
-
-```shell
-dd if=/dev/zero of=50MB.dummy bs=1M count=50 # 50MBのダミーファイル作成
-aws s3 cp 50MB.dummy s3://$BUCKET_NAME --debug
-```
-
 ### S3へsyncで一括アップロード
 
 dataフォルダをまるごとアップロードしています。
@@ -172,18 +163,31 @@ aws s3api put-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg --body ~/enviro
 aws s3api get-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-s3/s3api-download_AWS.jpg
 ```
 
-### S3へアップロード(マルチパートアップロード)
+## マルチパートアップロード
 
-低コマンドAPIのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
+Amazon S3のマルチパートアップロードは、単一の大きなファイルを複数の「パート」に分割して並列にアップロードできる機能です。これにより、スループットが向上し、ネットワークエラーによる中断時も途中から再開できるため、信頼性が高まります。
+
+### 高レベルコマンドで50MBのファイルをS3へマルチパートアップロード
+
+高レベルコマンドのためcpコマンドでもよしなにマルチアップロードしてくれます
+
+```shell
+dd if=/dev/zero of=50MB-high.dummy bs=1M count=50 # 50MBのダミーファイル作成
+aws s3 cp 50MB.dummy s3://$BUCKET_NAME --debug
+```
+
+### 低レベルコマンドで50MBのファイルをS3へマルチパートアップロード
+
+低レベルコマンドのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
 
 * 50MBのダミーファイル作成
 ```shell
-dd if=/dev/zero of=50MB.dummy bs=1M count=50
+dd if=/dev/zero of=50MB-low.dummy bs=1M count=50
 ```
 
 * 20MB単位で3つのファイルに分割
 ```
-split -b 20MB 50MB.dummy -d
+split -b 20MB 50MB-low.dummy -d
 ```
 
 * マルチパートアップロード開始
