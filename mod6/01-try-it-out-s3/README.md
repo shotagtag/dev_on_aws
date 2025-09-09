@@ -1,4 +1,9 @@
-## AWS S3 CLI commands
+# 🚀ラボの開発環境でS3を触ってみましょう
+
+適宜マネジメントコンソールでS3の画面も確認しつつ進めると理解が深まっておすすめです👍
+
+**ラボ2**環境のvscode serverにログインします。
+[参考](https://github.com/shotagtag/dev_on_aws/tree/main/mod3/01-try-it-out-awstools#%E3%83%A9%E3%83%9C1%E7%92%B0%E5%A2%83%E3%81%A7-vscode-server-%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%97%E3%81%BE%E3%81%97%E3%82%87%E3%81%86)
 
 ### 参考ドキュメント：S3 api
 
@@ -171,45 +176,66 @@ aws s3api get-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg ~/environment/d
 
 低コマンドAPIのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
 
+* 50MBのダミーファイル作成
 ```shell
-# 50MBのダミーファイル作成
 dd if=/dev/zero of=50MB.dummy bs=1M count=50
-
-# 20MB単位で3つのファイルに分割
-split -b 20MB 50MB.dummy -d
-
-# マルチパートアップロード開始
-aws s3api create-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy
-
-# 返却されるUploadIdを控えておきます
-UPLOAD_ID=${返却されたUploadId}
-
-# splitした各ファイルを各パートとして送信
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 1 --body x00 --upload-id ${UPLOAD_ID}
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 2 --body x01 --upload-id ${UPLOAD_ID}
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 3 --body x02 --upload-id ${UPLOAD_ID}
-
-# 各パートを送信したときに返却されるETagを情報として渡し、マルチパートアップロードを完成させます(下記part.jsonファイルを参照)
-aws s3api complete-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --upload-id ${UPLOAD_ID} --multipart-upload file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/part.json 
 ```
 
-part.json
+* 20MB単位で3つのファイルに分割
+```
+split -b 20MB 50MB.dummy -d
+```
+
+* マルチパートアップロード開始
+```
+aws s3api create-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy
+```
+
+* 返却されるUploadIdを控えておきます
+```
+UPLOAD_ID=${返却されたUploadId}
+```
+
+* splitした各ファイルを各パートとして送信
+
+パート1の送信
+```
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 1 --body x00 --upload-id ${UPLOAD_ID}
+```
+パート2の送信
+```
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 2 --body x01 --upload-id ${UPLOAD_ID}
+```
+パート3の送信
+```
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 3 --body x02 --upload-id ${UPLOAD_ID}
+```
+
+* 各パートを送信したときに返却されるETagを情報として `environment/dev_on_aws/mod6/01-try-it-out-s3/part.json` の xxxxxxx に反映し、マルチパートアップロードの完了指示ファイルを完成させる(viやvscodeの編集機能を使ってください)
+
+part.json 完成サンプル(バッククォートに注意！)
 
 ```json
 {
   "Parts": [
     {
-      "ETag": "\"xxxxxxxxx\"",
+      "ETag": "\"10e4462c9d0b08e7f0b304c4fbfeafa3\"",
       "PartNumber": 1
     },
     {
-      "ETag": "\"xxxxxxxxx\"",
+      "ETag": "\"10e4462c9d0b08e7f0b304c4fbfeafa3\"",
       "PartNumber": 2
     },
     {
-      "ETag": "\"xxxxxxxxx\"",
+      "ETag": "\"c77168e1fe31a482eb8dfdaae061e846\"",
       "PartNumber": 3
     }
   ]
 }
 ```
+
+* マルチパートアップロードの完了指示を行い、S3側でpartファイルを結合します。
+```
+aws s3api complete-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --upload-id ${UPLOAD_ID} --multipart-upload file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/part.json 
+```
+
