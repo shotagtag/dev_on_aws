@@ -66,7 +66,7 @@ aws s3 cp ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS.jpg s3://$BUCKET_NA
 
 ### S3バケットからダウンロード
 
-同じcpコマンドですが引数の順序が異なります
+同じcpコマンドですが引数の順序が異なります、AWS-2.jpgという名前でサーバー上にダウンロードします。
 
 ```shell
 aws s3 cp s3://$BUCKET_NAME/AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS-2.jpg
@@ -83,8 +83,10 @@ aws s3 cp 50MB.dummy s3://$BUCKET_NAME --debug
 
 ### S3へsyncで一括アップロード
 
+dataフォルダをまるごとアップロードしています。
+
 ```shell
-aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data s3://$BUCKET_NAME
+aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data/ s3://$BUCKET_NAME/data/
 ```
 
 ### 静的Webサイトホスティング
