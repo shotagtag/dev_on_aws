@@ -44,10 +44,10 @@ aws s3 ls
 - 全てのAWSアカウントで一つしか無い名前であること
 - 全て小文字であること
 
-※下記の「被らなそうな適当な文字列」箇所をご自身で変更して好きなバケット名へ変更しましょう。`notes-bucket-`は消さないでください。
+※下記の「被らなそうな適当な文字列」箇所をご自身で変更して好きなバケット名へ変更しましょう。`notes-bucket-minilab`は消さないでください。
 
 ```shell
-BUCKET_NAME=notes-bucket-被らなそうな適当な文字列
+BUCKET_NAME=notes-bucket-minilab-被らなそうな適当な文字列
 ```
 
 mb(make bucket)コマンドでバケットを作成します
