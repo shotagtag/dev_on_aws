@@ -97,6 +97,13 @@ aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data/ s3://$BUCKET_NA
 aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document error.html
 ```
 
+ブロックパブリックアクセスが有効化されており、このままではバケットを公開するためのバケットポリシーが拒否されます。
+このためブロックパブリックアクセスを無効化します。
+
+```
+aws s3api put-public-access-block --bucket $mybucket --public-access-block-configuration "BlockPublicPolicy=false,RestrictPublicBuckets=false"
+```
+
 バケットポリシーを設定
 
 ```shell
