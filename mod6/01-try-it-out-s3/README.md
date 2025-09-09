@@ -1,0 +1,201 @@
+## AWS S3 CLI commands
+
+### 参考ドキュメント：S3 api
+
+[AWS CLI での高レベル (S3) コマンドの使用 - AWS Command Line Interface](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-services-s3-commands.html)
+
+[AWS CLI での API レベル (s3api) コマンドの使用 - AWS Command Line Interface](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-services-s3-apicommands.html)
+
+### 準備
+
+1. サンプルコードを取得し、ディレクトリに移動します。
+```
+git clone https://github.com/shotagtag/dev_on_aws
+cd dev_on_aws/mod6/01-try-it-out-s3/
+```
+
+### リージョンを取得
+
+```shell
+REGION=`aws configure get region`
+echo $REGION
+```
+
+## s3コマンド(高レベルAPI)
+
+最小限の結果がよしなに返却されます
+
+どんなコマンドがあるかはhelpコマンドを実行してみましょう。マニュアルページが開きます。「q」キーを押すと、マニュアルページを閉じることができます。
+
+```shell
+aws s3 help
+```
+
+### S3バケット一覧を取得
+
+```shell
+aws s3 ls
+```
+
+### S3バケットを作成
+
+好きなバケット名を設定します。このとき下記に注意してください
+
+- 全てのAWSアカウントで一つしか無い名前であること
+- 全て小文字であること
+
+例えば、今日の日付＋イニシャル＋適当な数字を組み合わせます
+※下記はご自身で好きなバケット名へ変更してください
+
+```shell
+BUCKET_NAME=2025mmdd-被らなそうな適当な文字列
+```
+
+mb(make bucket)コマンドでバケットを作成します
+
+```shell
+aws s3 mb s3://$BUCKET_NAME --region $REGION
+```
+
+### S3バケットへアップロード
+
+準備で `git clone` 済みの画像データをS3バケットへアップロードします
+
+```shell
+aws s3 cp ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS.jpg s3://$BUCKET_NAME
+```
+
+### S3バケットからダウンロード
+
+同じcpコマンドですが引数の順序が異なります
+
+```shell
+aws s3 cp s3://$BUCKET_NAME/AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS-2.jpg
+```
+
+### S3へアップロード(マルチパートアップロード)
+
+高レベルAPIのためcpコマンドでもよしなにマルチアップロードしてくれます
+
+```shell
+dd if=/dev/zero of=50MB.dummy bs=1M count=50 # 50MBのダミーファイル作成
+aws s3 cp 50MB.dummy s3://$BUCKET_NAME --debug
+```
+
+### S3へsyncで一括アップロード
+
+```shell
+aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data s3://$BUCKET_NAME
+```
+
+### 静的Webサイトホスティング
+
+静的Webサイトホスティング設定の有効化
+
+```shell
+aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document error.html
+```
+
+バケットポリシーを設定
+
+```shell
+sed -i "s/\[BUCKET\]/$BUCKET_NAME/" ~/environment/dev_on_aws/mod6/01-try-it-out-s3/policy.json 
+aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/policy.json 
+```
+
+静的WebサイトホスティングのURLを出力してアクセス
+
+```shell
+echo http://$BUCKET_NAME.s3-website.$REGION.amazonaws.com/
+```
+
+## s3apiコマンド(低レベルAPI)
+
+低レベルAPIなのでレスポンスがそのまま返却されます
+
+どんなコマンドがあるかはhelpコマンドを実行してみましょう
+
+```shell
+aws s3api help
+```
+
+### S3バケット一覧を取得
+
+低レベルAPIのレスポンスがどのような内容か確認します
+
+```shell
+aws s3api list-buckets
+```
+
+これだと使いづらいのでqueryオプションでフィルタリングします
+
+```shell
+aws s3api list-buckets --query 'Buckets[].Name'
+```
+
+### S3バケットを作成
+
+```shell
+aws s3api create-bucket --bucket ${BUCKET_NAME}-s3api --region $REGION --create-bucket-configuration LocationConstraint=$REGION
+```
+
+### S3バケットへアップロード
+
+```shell
+aws s3api put-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg --body ~/environment/dev_on_aws/mod6/01-try-it-out-s3/AWS.jpg
+```
+
+### S3バケットからダウンロード
+
+--bodyオプションが無いことに注意
+
+```shell
+aws s3api get-object --bucket ${BUCKET_NAME}-s3api --key AWS.jpg ~/environment/dev_on_aws/mod6/01-try-it-out-s3/s3api-download_AWS.jpg
+```
+
+### S3へアップロード(マルチパートアップロード)
+
+低レベルAPIのため自分たちでマルチパートアップロードの開始や、何を送信するかなど完全に制御する必要があります
+
+```shell
+# 50MBのダミーファイル作成
+dd if=/dev/zero of=50MB.dummy bs=1M count=50
+
+# 20MB単位で3つのファイルに分割
+split -b 20MB 50MB.dummy -d
+
+# マルチパートアップロード開始
+aws s3api create-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy
+
+# 返却されるUploadIdを控えておきます
+UPLOAD_ID=${返却されたUploadId}
+
+# splitした各ファイルを各パートとして送信
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 1 --body x00 --upload-id ${UPLOAD_ID}
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 2 --body x01 --upload-id ${UPLOAD_ID}
+aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 3 --body x02 --upload-id ${UPLOAD_ID}
+
+# 各パートを送信したときに返却されるETagを情報として渡し、マルチパートアップロードを完成させます(下記part.jsonファイルを参照)
+aws s3api complete-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --upload-id ${UPLOAD_ID} --multipart-upload file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/part.json 
+```
+
+part.json
+
+```json
+{
+  "Parts": [
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 1
+    },
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 2
+    },
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 3
+    }
+  ]
+}
+```
