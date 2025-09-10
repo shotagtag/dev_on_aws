@@ -85,8 +85,7 @@ aws dynamodb put-item \
 
 ```shell
 aws dynamodb get-item --table-name Demo-Music \
---key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}' \
---return-consumed-capacity TOTAL
+--key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}'
 ```
 
 ### データ確認(Scan)
@@ -95,7 +94,7 @@ aws dynamodb get-item --table-name Demo-Music \
 
 ```shell
 aws dynamodb scan \
---table-name Demo-Music \
+--table-name Demo-Music
 ```
 
 ### データ検索(Query)
