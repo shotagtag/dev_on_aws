@@ -172,7 +172,7 @@ Amazon S3のマルチパートアップロードは、単一の大きなファ�
 
 ```shell
 dd if=/dev/zero of=50MB-high.dummy bs=1M count=50 # 50MBのダミーファイル作成
-aws s3 cp 50MB.dummy s3://$BUCKET_NAME --debug
+aws s3 cp 50MB-high.dummy s3://$BUCKET_NAME --debug
 ```
 
 ### 低レベルコマンドで50MBのファイルをS3へマルチパートアップロード
@@ -191,7 +191,7 @@ split -b 20MB 50MB-low.dummy -d
 
 * マルチパートアップロード開始
 ```
-aws s3api create-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy
+aws s3api create-multipart-upload --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy
 ```
 
 * 返却されるUploadIdを控えておきます
@@ -203,15 +203,15 @@ UPLOAD_ID=${返却されたUploadId}
 
 パート1の送信
 ```
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 1 --body x00 --upload-id ${UPLOAD_ID}
+aws s3api upload-part --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy --part-number 1 --body x00 --upload-id ${UPLOAD_ID}
 ```
 パート2の送信
 ```
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 2 --body x01 --upload-id ${UPLOAD_ID}
+aws s3api upload-part --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy --part-number 2 --body x01 --upload-id ${UPLOAD_ID}
 ```
 パート3の送信
 ```
-aws s3api upload-part --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --part-number 3 --body x02 --upload-id ${UPLOAD_ID}
+aws s3api upload-part --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy --part-number 3 --body x02 --upload-id ${UPLOAD_ID}
 ```
 
 * 各パートを送信したときに返却されるETagを情報として `environment/dev_on_aws/mod6/01-try-it-out-s3/part.json` の xxxxxxx に反映し、マルチパートアップロードの完了指示ファイルを完成させる(viやvscodeの編集機能を使ってください)
@@ -239,6 +239,6 @@ part.json 完成サンプル(バッククォートに注意！)
 
 * マルチパートアップロードの完了指示を行い、S3側でpartファイルを結合します。
 ```
-aws s3api complete-multipart-upload --bucket ${BUCKET_NAME}-s3api --key 50MB_s3api.dummy --upload-id ${UPLOAD_ID} --multipart-upload file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/part.json 
+aws s3api complete-multipart-upload --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy --upload-id ${UPLOAD_ID} --multipart-upload file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/part.json 
 ```
 
