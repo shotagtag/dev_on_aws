@@ -84,8 +84,7 @@ aws dynamodb put-item \
 * GetItemはキーを指定して項目を取得するオペレーションです。
 
 ```shell
-aws dynamodb get-item --table-name Demo-Music \
---key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}'
+aws dynamodb get-item --table-name Demo-Music --key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}'
 ```
 
 ### データ確認(Scan)
@@ -93,8 +92,7 @@ aws dynamodb get-item --table-name Demo-Music \
 * Scanはテーブルから全ての項目を取得するオペレーションです。
 
 ```shell
-aws dynamodb scan \
---table-name Demo-Music
+aws dynamodb scan --table-name Demo-Music
 ```
 
 ### データ検索(Query)
@@ -108,7 +106,7 @@ aws dynamodb scan \
 aws dynamodb query \
 --table-name Demo-Music \
 --key-condition-expression "Singer = :v1" \
---expression-attribute-values '{":v1": {"S": "John"}}' \
+--expression-attribute-values '{":v1": {"S": "John"}}'
 ```
 
 * 先ほどと同じくQueryを使っていますが、ソートキー`Title`の検索条件を追加し、さらに柔軟に指定しています。
@@ -133,7 +131,7 @@ aws dynamodb query \
 --select COUNT \
 --table-name Demo-Music \
 --key-condition-expression "Singer = :v1" \
---expression-attribute-values '{":v1": {"S": "John"}}' \
+--expression-attribute-values '{":v1": {"S": "John"}}'
 ```
 
 ### データ追加・更新(UpdateItem)
@@ -175,6 +173,5 @@ aws dynamodb get-item --table-name Demo-Music \
 
 ### Table削除
 ```shell
-aws dynamodb delete-table \
---table-name Demo-Music
+aws dynamodb delete-table --table-name Demo-Music
 ```
