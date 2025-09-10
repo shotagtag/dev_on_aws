@@ -157,7 +157,7 @@ aws dynamodb update-item --table-name Demo-Music \
 ```shell
 aws dynamodb delete-item \
 --table-name Demo-Music \
---key '{"Singer": {"S": "Yan"}, "Title": {"S": "Super"}}'
+--key '{"Singer": {"S": "Marry"}, "Title": {"S": "Hi"}}'
 ```
 
 ### データ取得(GetItem:強い整合性)
