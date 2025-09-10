@@ -93,7 +93,8 @@ aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/data/ s3://$BUCKET_NA
 aws s3 website s3://$BUCKET_NAME --index-document index.html --error-document error.html
 ```
 
-静的Webサイトの資材が入ったフォルダをアップロードします
+静的Webサイトの資材が入ったフォルダをアップロードします。
+`index.html`や画像などウェブサイトに必要なファイルが含まれています。
 
 ```shell
 aws s3 sync ~/environment/dev_on_aws/mod6/01-try-it-out-s3/sample-site/ s3://$BUCKET_NAME
@@ -113,7 +114,7 @@ sed -i "s/\[BUCKET\]/$BUCKET_NAME/" ~/environment/dev_on_aws/mod6/01-try-it-out-
 aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy file://~/environment/dev_on_aws/mod6/01-try-it-out-s3/policy.json 
 ```
 
-静的WebサイトホスティングのURLを出力してアクセス
+静的WebサイトホスティングのURLを出力してアクセスします。新しいタブでURLをクリックしてみましょう。
 
 ```shell
 echo http://$BUCKET_NAME.s3-website.$REGION.amazonaws.com/
@@ -121,9 +122,7 @@ echo http://$BUCKET_NAME.s3-website.$REGION.amazonaws.com/
 
 ## s3apiコマンド(低レベルコマンド)
 
-低レベルコマンドなのでレスポンスがそのまま返却されます
-
-どんなコマンドがあるかはhelpコマンドを実行してみましょう
+どんなコマンドがあるかはhelpコマンドを実行してみましょう。「q」キーを押すと、マニュアルページを閉じることができます。
 
 ```shell
 aws s3api help
@@ -131,13 +130,13 @@ aws s3api help
 
 ### S3バケット一覧を取得
 
-低レベルコマンドのレスポンスがどのような内容か確認します
+低レベルコマンドのレスポンスがどのような内容か確認します。
 
 ```shell
 aws s3api list-buckets
 ```
 
-これだと使いづらいのでqueryオプションでフィルタリングします
+これだと使いづらいのでqueryオプションでフィルタリングします。
 
 ```shell
 aws s3api list-buckets --query 'Buckets[].Name'
