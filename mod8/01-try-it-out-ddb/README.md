@@ -136,9 +136,9 @@ aws dynamodb query \
 
 ### データ追加・更新(UpdateItem)
 
-* UpdateItemは項目の更新に使用します。同一のパーティションキー＆ソートキーが存在しない場合は追加されます。
+* UpdateItemは項目の更新に使用します(同一のパーティションキー＆ソートキーが存在しない場合は追加されます。)
   1. `Singer="Bob", Title="Hello"`の項目の`ReleaseDate`を"20250101"に更新します。
-  1. `update-expression` で実行したい更新操作を指定します。`SET`は属性の追加または更新を行う指定です。`SET ReleaseDate`とあるので、ReleaseDateを :newval(プレースホルダー)で更新
+  1. `update-expression` で実行したい更新操作を指定します。`SET`は属性の追加または更新を行う指定です。`SET ReleaseDate`は、`ReleaseDate` を `:newval`(プレースホルダー)で更新する、という意味
   1. `expression-attribute-values` で実際に更新する値を指定します。
   1. `return-values ALL_NEW` は更新後の全ての値を返す。という意味です。他にも更新された値だけを返す`UPDATED_NEW`などがあります。
 
