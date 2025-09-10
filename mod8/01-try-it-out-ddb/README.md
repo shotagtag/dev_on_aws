@@ -29,7 +29,7 @@ cd dev_on_aws/mod8/01-try-it-out-ddb/
 cat create_table.json
 ```
 
-* テーブルを作成します。
+* テーブルを作成します。作成結果は「q」キーを押すと閉じることができます。
 
 ```shell
 aws dynamodb create-table \
