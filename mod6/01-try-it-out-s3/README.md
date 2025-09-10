@@ -194,9 +194,11 @@ split -b 20MB 50MB-low.dummy -d
 aws s3api create-multipart-upload --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy
 ```
 
-* 返却されるUploadIdを控えておきます
+* create-multipart-upload コマンドで返却されたUploadIdはあとで使うので変数に入力しておきます。
+  例 : `UPLOAD_ID=N8ath2YMQK4_dGZXPnb1hKEm_gkc1z8_305SZrVCTw_9NE58pnC90RRQDgEQqXxFzFQpBWjGjY9YYvS6BCj1hLB2qx9U5ufGybWWPpq5jrABmrTiXanAPb0hCoYiiGTLtDtOujVlW5cynHe0mqkwH49TtTniX7reJj1HWT8hb3M-`
+
 ```
-UPLOAD_ID=${返却されたUploadId}
+UPLOAD_ID=返却されたUploadIdに書き換え
 ```
 
 * splitした各ファイルを各パートとして送信
@@ -216,7 +218,7 @@ aws s3api upload-part --bucket ${BUCKET_NAME} --key 50MB_s3api.dummy --part-numb
 
 * 各パートを送信したときに返却されるETagを情報として `environment/dev_on_aws/mod6/01-try-it-out-s3/part.json` の xxxxxxx に反映し、マルチパートアップロードの完了指示ファイルを完成させる(viやvscodeの編集機能を使ってください)
 
-part.json 完成サンプル(バッククォートに注意！)
+part.json 完成サンプル(余計なバッククォートを入力しないように注意！)
 
 ```json
 {
