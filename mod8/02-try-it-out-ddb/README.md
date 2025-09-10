@@ -1,13 +1,16 @@
-## DynamoDB サンプル集
+# 🚀SDKでDynamoDBを触ってみましょう
+
+適宜マネジメントコンソールでDynamoDBの画面も確認しつつ進めると理解が深まっておすすめです👍
 
 ### 準備
 
-- Cloud9 を起動します
-- サンプルコードを git clone(すでにcloneされている場合は省略してください)
+1. **ラボ3**環境のvscode serverにログインします。手順書の「LabWorkspaceURL」を確認し、ブラウザでアクセスしましょう。
+[参考](https://github.com/shotagtag/dev_on_aws/tree/main/mod3/01-try-it-out-awstools#%E3%83%A9%E3%83%9C1%E7%92%B0%E5%A2%83%E3%81%A7-vscode-server-%E3%81%AB%E6%8E%A5%E7%B6%9A%E3%81%97%E3%81%BE%E3%81%97%E3%82%87%E3%81%86)
 
-```shell
-git clone https://github.com/shotagtag/devonaws.git
-cd ~/environment/devonaws/samples/python/ddb
+1. サンプルコードを取得し、ディレクトリに移動します。
+```
+git clone https://github.com/shotagtag/dev_on_aws
+cd dev_on_aws/mod8/02-try-it-out-ddb/
 ```
 
 ### テーブル作成
