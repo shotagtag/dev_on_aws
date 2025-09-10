@@ -15,7 +15,7 @@ cd dev_on_aws/mod8/01-try-it-out-ddb/
 
 ### Table作成
 
-* 作成するテーブル定義を確認します。
+* 作成するテーブル定義ファイルを確認します。
   * テーブル名 : "Demo-Music"
   * プライマリキーは複合キーとして以下を設定
     * パーティションキー: `Singer`
@@ -26,7 +26,7 @@ cd dev_on_aws/mod8/01-try-it-out-ddb/
     * ソートキー : `ReleaseDate`
 
 ```
-cat settings/create_table.json
+cat create_table.json
 ```
 
 * テーブルを作成します。
@@ -38,7 +38,7 @@ aws dynamodb create-table \
 
 ### テストデータ投入
 
-* put-itemを使用して4件の項目を作成します。マネジメントコンソールでDynamoDBを見てデータが投入されたか確認しましょう。
+* put-itemを使用して4件の項目を作成します。
   
 ```shell
 # 1件目
