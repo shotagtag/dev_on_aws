@@ -81,7 +81,7 @@ aws dynamodb put-item \
 
 ### データ取得
 
-* GetItemはキーを指定して項目を取得するオペレーションです。
+* GetItemはキーを指定して、**1つ**の項目を取得するオペレーションです。キーを完全一致で指定し、項目を取り出します。
 
 ```shell
 aws dynamodb get-item --table-name Demo-Music --key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}'
