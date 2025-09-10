@@ -33,7 +33,7 @@ cat settings/create_table.json
 
 ```shell
 aws dynamodb create-table \
---cli-input-json file://settings/create_table.json
+--cli-input-json file://create_table.json
 ```
 
 ### テストデータ投入
