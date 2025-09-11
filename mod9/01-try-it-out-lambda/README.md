@@ -8,7 +8,7 @@
 
 1. マネジメントコンソールから Lambda 関数を作成
 
-    - 関数名は `dictate-function` を入力(処理内容と関数名の一貫性がありませんが、ラボ権限の関係です)
+    - 関数名は `dictate-function` を入力(処理内容と関数名の一貫性がありませんが、ラボ権限の関係です。ご了承ください)
     - Python 3.9 を選択
     - 実行ロールに `lambdaPollyRole` を使用します
     - ラボ環境の都合上、指定しないと進めないため指定します
@@ -38,7 +38,7 @@ def lambda_handler(event, context):
 
 1. マネジメントコンソールから Lambda 関数を作成
 
-    - 関数名は `search-function` を入力
+    - 関数名は `search-function` を入力(処理内容と関数名の一貫性がありませんが、ラボ権限の関係です。ご了承ください)
     - Python 3.9 を選択
     - 実行ロールは既存の `lambdaPollyRole`  ロールを選択
       - ラボでも `lambdaPollyRole` を使用します。どんな権限がついているか確認しておきましょう
