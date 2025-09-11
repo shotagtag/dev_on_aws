@@ -4,11 +4,11 @@
 
 1. **ラボ4**環境のマネジメントコンソールを開きます(リージョンは変更しないでください。)
 
-### シンプルな Lambda 関数をマネジメントコンソールで作成してみよう
+### Hello World するシンプルな Lambda 関数をマネジメントコンソールで作成してみよう
 
 1. マネジメントコンソールから Lambda 関数を作成
 
-    - 関数名は `hello-world-function` を入力
+    - 関数名は `dictate-function` を入力(処理内容と関数名の一貫性がありませんが、ラボ権限の関係です)
     - Python 3.9 を選択
     - 実行ロールに `lambdaPollyRole` を使用します
     - ラボ環境の都合上、指定しないと進めないため指定します
@@ -29,10 +29,7 @@ def lambda_handler(event, context):
 
 3. `Deploy` ボタンでソースコードをデプロイします
 
-    - `Test` ボタンで Lambda 関数を実行します
-      - 最初は新しいイベントを作成してください
-      - イベント名は `mytest01` を入力
-      - イベントJSONはそのままで大丈夫です
+4. 上部のテストタブをクリックし、`テスト` ボタンで Lambda 関数を実行します
       - テストが完了すると、結果が出力されます
 
 ----
@@ -41,7 +38,7 @@ def lambda_handler(event, context):
 
 1. マネジメントコンソールから Lambda 関数を作成
 
-    - 関数名は `handson-ddb-query-function` を入力
+    - 関数名は `search-function` を入力
     - Python 3.9 を選択
     - 実行ロールは既存の `lambdaPollyRole`  ロールを選択
       - ラボでも `lambdaPollyRole` を使用します。どんな権限がついているか確認しておきましょう
