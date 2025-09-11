@@ -4,7 +4,7 @@
 
 1. **ラボ4**環境のマネジメントコンソールを開きます(リージョンは変更しないでください。)
 
-### Hello World するシンプルな Lambda 関数をマネジメントコンソールで作成してみよう
+### Hello World するシンプルなLambda関数をマネジメントコンソールで作成してみよう
 
 1. マネジメントコンソールから Lambda 関数を作成
 
@@ -29,12 +29,12 @@ def lambda_handler(event, context):
 
 3. `Deploy` ボタンでソースコードをデプロイします
 
-4. 上部のテストタブをクリックし、`テスト` ボタンで Lambda 関数を実行します
+4. 上部の「テストタブ」をクリックし、`テスト` ボタンで Lambda 関数を実行します
       - テストが完了すると、結果が出力されます
 
 ----
 
-### Lambda 関数をマネジメントコンソールで作成してみよう
+### DynamoDBにQueryを行うLambda関数をマネジメントコンソールで作成してみよう
 
 1. マネジメントコンソールから Lambda 関数を作成
 
@@ -68,7 +68,7 @@ def lambda_handler(event, context):
     return records
 ```
 
-3. `Deploy` ボタンでソースコードをデプロイします
+3. 青い`Deploy` ボタンでソースコードをデプロイします
 
 4. `Test` ボタンで Lambda 関数を実行します
 
@@ -83,11 +83,10 @@ def lambda_handler(event, context):
 
     - `UserId` をイベントで渡せるようにしてみましょう
       - Lambda 関数のソースコードを編集します
-        - `UserId = "testuser"` を削除します
+        - `UserId = "testuser"` の行をまるっと削除します
         - `# UserId = event["UserId"]` のコメントを外します。(Python では `#` があるとその先はコメントになります)
       - 更新を反映するために `Deploy` します
     - `UserId` をテストイベントで渡してみましょう
-      - `Test` ボタンの▼を押して、 `Configure test event` を開きます
       - イベント JSON に `{ "UserId": "testuser" }` を指定して保存、実行してみましょう
       - `UserId` をハードコーディングしなくてもOKになりました
 
@@ -95,7 +94,7 @@ def lambda_handler(event, context):
 
     - テーブル名を環境変数を参照するようにしてみましょう
       - Lambda 関数の `コード` で
-        - `ddbTable = "Notes"` を削除します
+        - `ddbTable = "Notes"` の行をまるっと削除します
         - `# ddbTable = os.environ['TABLE_NAME']` のコメントを外します
       - 更新を反映するために `Deploy` します
     - `設定` → `環境変数` でテーブル名を設定してみましょう
